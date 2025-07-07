@@ -28,6 +28,7 @@ class TransactionCreateRequest(BaseModel):
 
 # --- Endpoints ---
 
+
 @router.get("/accounts", response_model=list[Account])
 async def get_all_accounts(db: DatabaseSession = Depends(get_db_session)):
     """Obtiene una lista de todas las cuentas existentes."""
@@ -36,7 +37,9 @@ async def get_all_accounts(db: DatabaseSession = Depends(get_db_session)):
 
 
 @router.get("/accounts/{account_id}", response_model=Account)
-async def get_account_details(account_id: UUID, db: DatabaseSession = Depends(get_db_session)):
+async def get_account_details(
+    account_id: UUID, db: DatabaseSession = Depends(get_db_session)
+):
     """Obtiene los detalles de una cuenta específica por su ID."""
     service = TransactionService(db)
     try:
@@ -46,7 +49,9 @@ async def get_account_details(account_id: UUID, db: DatabaseSession = Depends(ge
 
 
 @router.get("/accounts/{account_id}/transactions", response_model=list[Transaction])
-async def get_account_transactions(account_id: UUID, db: DatabaseSession = Depends(get_db_session)):
+async def get_account_transactions(
+    account_id: UUID, db: DatabaseSession = Depends(get_db_session)
+):
     """Obtiene el historial de transacciones para una cuenta específica."""
     service = TransactionService(db)
     try:
@@ -59,7 +64,7 @@ async def get_account_transactions(account_id: UUID, db: DatabaseSession = Depen
     "/transactions",
     response_model=Transaction,
     status_code=status.HTTP_201_CREATED,
-    dependencies=[Depends(get_api_key)], # Endpoint protegido
+    dependencies=[Depends(get_api_key)],  # Endpoint protegido
 )
 async def create_new_transaction(
     transaction_request: TransactionCreateRequest,
@@ -83,4 +88,7 @@ async def create_new_transaction(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
         # Capturamos cualquier otro error inesperado como un error 500 del servidor.
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ocurrió un error inesperado al procesar la transacción.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Ocurrió un error inesperado al procesar la transacción.",
+        )

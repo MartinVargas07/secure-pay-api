@@ -8,13 +8,15 @@ from core.config import settings
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
-    description="API para el procesamiento seguro de transacciones financieras."
+    description="API para el procesamiento seguro de transacciones financieras.",
 )
+
 
 # Mensaje de bienvenida en la ruta raíz
 @app.get("/", tags=["Root"])
 async def read_root():
     return {"message": f"Bienvenido a {settings.APP_NAME}"}
+
 
 # Incluimos las rutas definidas en api/routes.py
 # Esto mantiene nuestro código organizado.

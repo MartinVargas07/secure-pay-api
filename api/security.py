@@ -10,13 +10,14 @@ from core.config import settings
 # una cabecera llamada "X-API-Key".
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
+
 def get_api_key(api_key: str = Security(api_key_header)):
     """
     Dependencia que valida la API Key proporcionada en la cabecera X-API-Key.
-    
+
     Compara de forma segura la clave proporcionada con la clave de administrador
     almacenada en la configuración.
-    
+
     Raises:
         HTTPException(401): Si la clave es inválida.
     """

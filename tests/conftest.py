@@ -7,6 +7,7 @@ from typing import Generator
 # Importamos la app principal de FastAPI para que el TestClient pueda interactuar con ella.
 from main import app
 
+
 @pytest.fixture(scope="module")
 def client() -> Generator:
     """

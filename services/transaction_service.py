@@ -5,7 +5,12 @@ from decimal import Decimal
 
 from db.database import DatabaseSession
 from db.models import Account, Transaction, TransactionStatus
-from core.exceptions import AccountNotFoundError, InsufficientFundsError, SelfTransferError
+from core.exceptions import (
+    AccountNotFoundError,
+    InsufficientFundsError,
+    SelfTransferError,
+)
+
 
 class TransactionService:
     """
@@ -19,11 +24,11 @@ class TransactionService:
     def create_account(self, owner_name: str, balance: Decimal) -> Account:
         """
         Crea una nueva cuenta en el sistema.
-        
+
         Args:
             owner_name: El nombre del titular de la cuenta.
             balance: El saldo inicial de la cuenta.
-        
+
         Returns:
             El objeto Account recién creado.
         """
@@ -38,19 +43,21 @@ class TransactionService:
     def get_account(self, account_id: UUID) -> Account:
         """
         Obtiene una cuenta por su ID.
-        
+
         Args:
             account_id: El UUID de la cuenta a buscar.
-        
+
         Returns:
             El objeto Account si se encuentra.
-        
+
         Raises:
             AccountNotFoundError: Si la cuenta no existe.
         """
         account = self.db.get_account_by_id(account_id)
         if not account:
-            raise AccountNotFoundError(f"La cuenta con ID {account_id} no fue encontrada.")
+            raise AccountNotFoundError(
+                f"La cuenta con ID {account_id} no fue encontrada."
+            )
         return account
 
     def get_all_accounts(self) -> list[Account]:
@@ -60,13 +67,13 @@ class TransactionService:
     def get_transactions_for_account(self, account_id: UUID) -> list[Transaction]:
         """
         Obtiene el historial de transacciones para una cuenta específica.
-        
+
         Args:
             account_id: El UUID de la cuenta.
-        
+
         Returns:
             Una lista de objetos Transaction.
-            
+
         Raises:
             AccountNotFoundError: Si la cuenta no existe.
         """
@@ -75,49 +82,50 @@ class TransactionService:
         return self.db.get_transactions_for_account(account_id)
 
     def create_transaction(
-        self,
-        source_account_id: UUID,
-        destination_account_id: UUID,
-        amount: Decimal
+        self, source_account_id: UUID, destination_account_id: UUID, amount: Decimal
     ) -> Transaction:
         """
         Procesa una nueva transacción, aplicando todas las reglas de negocio.
         Esta operación simula una transacción atómica.
-        
+
         Args:
             source_account_id: ID de la cuenta de origen.
             destination_account_id: ID de la cuenta de destino.
             amount: El monto a transferir.
-            
+
         Returns:
             La transacción completada.
-            
+
         Raises:
             Varias excepciones de negocio si las validaciones fallan.
         """
         # 1. Validación: No se puede transferir a la misma cuenta.
         if source_account_id == destination_account_id:
-            raise SelfTransferError("La cuenta de origen y destino no pueden ser la misma.")
+            raise SelfTransferError(
+                "La cuenta de origen y destino no pueden ser la misma."
+            )
 
         # 2. Validación: El monto debe ser positivo (ya cubierto por Pydantic, pero es buena práctica validar).
         if amount <= 0:
             raise ValueError("El monto de la transacción debe ser positivo.")
-            
+
         # 3. Obtener cuentas y validar existencia.
         source_account = self.get_account(source_account_id)
         destination_account = self.get_account(destination_account_id)
 
         # 4. Validación: Fondos suficientes.
         if source_account.balance < amount:
-            raise InsufficientFundsError(f"Saldo insuficiente en la cuenta {source_account_id}.")
+            raise InsufficientFundsError(
+                f"Saldo insuficiente en la cuenta {source_account_id}."
+            )
 
         # --- Inicio de la Operación Atómica (Simulada) ---
         transaction = Transaction(
             source_account_id=source_account_id,
             destination_account_id=destination_account_id,
-            amount=amount
+            amount=amount,
         )
-        self.db.save_transaction(transaction) # Guardar en estado PENDING
+        self.db.save_transaction(transaction)  # Guardar en estado PENDING
 
         try:
             # 5. Actualizar saldos.
@@ -131,7 +139,7 @@ class TransactionService:
             # 7. Marcar la transacción como completada.
             transaction.status = TransactionStatus.COMPLETED
             self.db.save_transaction(transaction)
-            
+
             print(f"Transacción completada: {transaction.id}")
             return transaction
 
