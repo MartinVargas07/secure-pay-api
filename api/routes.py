@@ -2,7 +2,7 @@
 
 from uuid import UUID
 from decimal import Decimal
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from db.database import DatabaseSession, get_db_session
 from db.models import Account, Transaction
@@ -88,7 +88,5 @@ async def create_new_transaction(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
         # Capturamos cualquier otro error inesperado como un error 500 del servidor.
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Ocurrió un error inesperado al procesar la transacción.",
-        )
+        detail = f"Ocurrió un error inesperado al procesar la transacción: {e}"
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail)

@@ -1,6 +1,4 @@
 # core/config.py
-
-import os
 from pydantic_settings import BaseSettings
 from pydantic import SecretStr
 from dotenv import load_dotenv

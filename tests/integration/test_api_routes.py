@@ -22,7 +22,7 @@ def test_get_all_accounts_success(client: TestClient):
 
 
 def test_create_transaction_no_api_key(client: TestClient):
-    """Prueba que el endpoint de transacciones está protegido y devuelve 401 sin API Key."""
+    """Prueba que el endpoint de transacciones devuelve 401 sin API Key."""
     # Arrange
     payload = {
         "source_account_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",

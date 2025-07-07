@@ -47,7 +47,7 @@ class DatabaseSession:
         _transactions_db[transaction.id] = transaction
 
     def get_transactions_for_account(self, account_id: UUID) -> List[Transaction]:
-        """Busca todas las transacciones relacionadas con una cuenta (origen o destino)."""
+        """Busca todas las transacciones de una cuenta (como origen o destino)."""
         return [
             tx
             for tx in _transactions_db.values()
@@ -59,11 +59,6 @@ class DatabaseSession:
 def get_db_session():
     """
     Esta es una función generadora que actúa como un Inyector de Dependencias en FastAPI.
-
-    Crea una instancia de nuestra sesión de base de datos y la 'provee' (yield)
-    a la función del endpoint que la necesite. El bloque 'try...finally' asegura
-    que si hubiera operaciones de limpieza (como cerrar una conexión real),
-    se ejecutarían siempre.
     """
     _initialize_mock_data()  # Aseguramos que haya datos de prueba
     session = DatabaseSession()

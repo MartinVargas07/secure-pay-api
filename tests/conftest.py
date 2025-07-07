@@ -12,7 +12,7 @@ from main import app
 def client() -> Generator:
     """
     Fixture que crea un cliente de prueba para la API.
-    El 'scope="module"' significa que este cliente se creará una sola vez
+    scope="module" crea el cliente una vez por archivo de prueba.
     por cada archivo de pruebas que lo use, haciéndolo eficiente.
     """
     with TestClient(app) as c:
