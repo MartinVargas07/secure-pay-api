@@ -1,0 +1,20 @@
+# --- Framework y Servidor ---
+fastapi
+uvicorn[standard]
+
+# --- Modelado y Configuración ---
+pydantic
+python-dotenv
+
+# --- Seguridad ---
+passlib[bcrypt]
+
+# --- Herramientas de Desarrollo, Calidad y Pruebas ---
+# Nota: En proyectos grandes, estas se separarían en un requirements-dev.txt
+pytest
+pytest-cov
+httpx
+
+# --- Calidad de Código: Formateador y Linter ---
+black
+flake8
