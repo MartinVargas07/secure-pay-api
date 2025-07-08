@@ -22,7 +22,7 @@ def test_get_all_accounts_success(client: TestClient):
 
 
 def test_create_transaction_no_api_key(client: TestClient):
-    """Prueba que el endpoint de transacciones devuelve 401 sin API Key."""
+    """Prueba que el endpoint de transacciones devuelve 403 sin API Key."""
     # Arrange
     payload = {
         "source_account_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -34,9 +34,8 @@ def test_create_transaction_no_api_key(client: TestClient):
     response = client.post("/api/v1/transactions", json=payload)
 
     # Assert
-    assert (
-        response.status_code == 403
-    )  # FastAPI convierte la falta de cabecera a 401 por auto_error=True
+    assert response.status_code == 403
+    # CORRECCIÓN: Se ajusta el texto esperado al que realmente devuelve FastAPI.
     assert "Not authenticated" in response.json()["detail"]
 
 

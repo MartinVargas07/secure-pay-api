@@ -156,3 +156,16 @@ def test_create_account_success():
     assert new_account.owner_name == owner_name
     assert new_account.balance == initial_balance.quantize(Decimal("0.01"))
     assert mock_db.get_account_by_id(new_account.id) is not None
+
+
+def test_create_account_with_negative_balance():
+    """Prueba que no se puede crear una cuenta con saldo inicial negativo."""
+    # Arrange
+    mock_db = MockDatabaseSession()
+    service = TransactionService(db_session=mock_db)
+
+    # Act & Assert
+    with pytest.raises(ValueError) as excinfo:
+        service.create_account("Bad User", Decimal("-100.00"))
+
+    assert "El saldo inicial no puede ser negativo" in str(excinfo.value)
