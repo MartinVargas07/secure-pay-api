@@ -5,6 +5,7 @@ uvicorn[standard]
 # --- Modelado y Configuración ---
 pydantic
 python-dotenv
+pydantic-settings
 
 # --- Seguridad ---
 passlib[bcrypt]
