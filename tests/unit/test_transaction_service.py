@@ -142,6 +142,7 @@ def test_create_transaction_with_negative_amount():
 
     assert "El monto de la transacción debe ser positivo" in str(excinfo.value)
 
+
 def test_create_account_success():
     """Prueba la creación exitosa de una nueva cuenta."""
     # Arrange

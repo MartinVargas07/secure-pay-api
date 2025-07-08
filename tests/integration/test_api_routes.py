@@ -39,6 +39,7 @@ def test_create_transaction_no_api_key(client: TestClient):
     )  # FastAPI convierte la falta de cabecera a 401 por auto_error=True
     assert "Not authenticated" in response.json()["detail"]
 
+
 def test_create_transaction_api_insufficient_funds(client: TestClient):
     """Prueba el flujo de error de la API cuando no hay fondos suficientes."""
     # Arrange: Primero, obtenemos las cuentas reales de la DB en memoria
