@@ -119,3 +119,24 @@ def test_create_transaction_source_account_not_found():
             destination_account_id=dest_account.id,
             amount=Decimal("10.00"),
         )
+
+def test_create_transaction_with_negative_amount():
+    """Prueba que se lanza un ValueError si el monto es negativo."""
+    # Arrange
+    mock_db = MockDatabaseSession()
+    source_account = Account(owner_name="Sender", balance=Decimal("100.00"))
+    dest_account = Account(owner_name="Receiver", balance=Decimal("50.00"))
+    mock_db.save_account(source_account)
+    mock_db.save_account(dest_account)
+
+    service = TransactionService(db_session=mock_db)
+
+    # Act & Assert
+    with pytest.raises(ValueError) as excinfo:
+        service.create_transaction(
+            source_account_id=source_account.id,
+            destination_account_id=dest_account.id,
+            amount=Decimal("-10.00")
+        )
+
+    assert "El monto de la transacción debe ser positivo" in str(excinfo.value)
