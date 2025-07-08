@@ -120,6 +120,7 @@ def test_create_transaction_source_account_not_found():
             amount=Decimal("10.00"),
         )
 
+
 def test_create_transaction_with_negative_amount():
     """Prueba que se lanza un ValueError si el monto es negativo."""
     # Arrange
@@ -136,7 +137,7 @@ def test_create_transaction_with_negative_amount():
         service.create_transaction(
             source_account_id=source_account.id,
             destination_account_id=dest_account.id,
-            amount=Decimal("-10.00")
+            amount=Decimal("-10.00"),
         )
 
     assert "El monto de la transacción debe ser positivo" in str(excinfo.value)
