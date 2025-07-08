@@ -141,3 +141,21 @@ def test_create_transaction_with_negative_amount():
         )
 
     assert "El monto de la transacción debe ser positivo" in str(excinfo.value)
+
+def test_create_account_success():
+    """Prueba la creación exitosa de una nueva cuenta."""
+    # Arrange
+    mock_db = MockDatabaseSession()
+    service = TransactionService(db_session=mock_db)
+    owner_name = "Test User"
+    initial_balance = Decimal("250.75")
+
+    # Act
+    new_account = service.create_account(owner_name, initial_balance)
+
+    # Assert
+    assert new_account is not None
+    assert new_account.owner_name == owner_name
+    assert new_account.balance == initial_balance.quantize(Decimal("0.01"))
+    # Verificamos que se haya guardado en nuestra base de datos falsa
+    assert mock_db.get_account_by_id(new_account.id) is not None
