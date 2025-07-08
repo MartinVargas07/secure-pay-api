@@ -39,6 +39,9 @@ jobs:
     name: 2. Pruebas y Cobertura
     needs: lint-and-format # Se ejecuta solo si el anterior es exitoso
     runs-on: ubuntu-latest
+    env: # <-- ESTA ES LA SECCIÓN AÑADIDA Y CORREGIDA
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v4
