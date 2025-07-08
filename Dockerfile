@@ -20,15 +20,15 @@ RUN python -m venv /opt/venv
 # Activamos el entorno virtual para los siguientes comandos RUN
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copiamos el archivo de dependencias
-COPY requirements.txt .
-
 # ===================================================================
 # PASO DE CORRECCIÓN: Actualizamos las herramientas base de Python
 # ANTES de instalar las dependencias de la aplicación.
-# Esto soluciona las vulnerabilidades encontradas por Trivy.
+# Esto soluciona las vulnerabilidades encontradas por Trivy en setuptools.
 # ===================================================================
 RUN pip install --upgrade pip setuptools wheel
+
+# Copiamos el archivo de dependencias
+COPY requirements.txt .
 
 # Instalamos las dependencias de la aplicación
 RUN pip install --no-cache-dir -r requirements.txt
