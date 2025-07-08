@@ -89,4 +89,6 @@ async def create_new_transaction(
     except Exception as e:
         # Capturamos cualquier otro error inesperado como un error 500 del servidor.
         detail = f"Ocurrió un error inesperado al procesar la transacción: {e}"
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail
+        )

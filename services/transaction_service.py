@@ -85,8 +85,7 @@ class TransactionService:
         self, source_account_id: UUID, destination_account_id: UUID, amount: Decimal
     ) -> Transaction:
         """
-        Procesa una nueva transacción, aplicando todas las reglas de negocio.
-        Esta operación simula una transacción atómica.
+        Procesa una nueva transacción aplicando todas las reglas de negocio.
 
         Args:
             source_account_id: ID de la cuenta de origen.

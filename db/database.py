@@ -58,7 +58,7 @@ class DatabaseSession:
 
 def get_db_session():
     """
-    Esta es una función generadora que actúa como un Inyector de Dependencias en FastAPI.
+    Función generadora que actúa como un Inyector de Dependencias en FastAPI.
     """
     _initialize_mock_data()  # Aseguramos que haya datos de prueba
     session = DatabaseSession()

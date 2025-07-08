@@ -11,9 +11,9 @@ from main import app
 @pytest.fixture(scope="module")
 def client() -> Generator:
     """
-    Fixture que crea un cliente de prueba para la API.
-    scope="module" crea el cliente una vez por archivo de prueba.
-    por cada archivo de pruebas que lo use, haciéndolo eficiente.
+    Crea un cliente de prueba para la API.
+
+    El scope="module" lo crea una vez por archivo, haciéndolo eficiente.
     """
     with TestClient(app) as c:
         yield c
