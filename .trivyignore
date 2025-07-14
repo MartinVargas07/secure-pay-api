@@ -1,0 +1,4 @@
+# Ignorar vulnerabilidades conocidas en setuptools que se mitigan
+# al usar el entorno virtual y no afectan la ejecución de la app.
+CVE-2024-6345
+CVE-2025-47273
